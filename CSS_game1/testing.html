@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* Set the height and width of the split containers */
+        .trademark {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            font-size: 12px;
+            color: gray;
+            z-index: 999;
+        }
+        .split {
+            height: 100%;
+            width: 50%;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        /* Set the background image for the left container */
+        .left {
+            left: 0;
+            background-image: url('/Users/dhevdharsan/Downloads/img4.webp');
+            background-size: cover; /* Optional: Cover the entire container with the background image */
+        }
+
+        #d1 {
+            background-color: rgba(11, 1, 1, 0.5); /* Firebrick color with 50% transparency */
+            width: 80%; /* Adjust the width as needed */
+            height: 40vh; /* Adjust the height as needed */
+            padding: 20px; /* Optional: Add padding for better visual appeal */
+            box-sizing: border-box; /* Optional: Include padding and border in the element's total width and height */
+        }
+
+        /* Set the background color for the right container */
+        .right {
+            right: 0;
+            /*background: linear-gradient(to left, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85)); /* Gradient from left to right, darker on the right */
+            /*background: rgb(6, 13, 70);*/
+            background: linear-gradient(to right,black, rgb(14, 16, 62));
+
+        }
+
+        /* Center the text within each container */
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white; /* Set the default text color */
+        }
+
+        /* Style the submit button */
+        #leftContainer {
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .submit-button,
+        .reset-button {
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Style the text area */
+        #cssStylesInput {
+            width: 100%; /* Make the text area full width */
+        }
+
+        /* Popup styles */
+        .popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            display: none;
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: 80%; /* Set a maximum height to prevent the popup from exceeding the viewport */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Left Container -->
+    <div class="split left">
+        <div class="centered" id="leftContainer">
+            <h1 id="abc">CSS Styles</h1>
+            <!-- Paragraphs to display questions -->
+            <div id="questionContainer"></div>
+            <textarea id="cssStylesInput" rows="10" cols="15"></textarea>
+            <button class="submit-button" onclick="applyStyles()">Apply Styles</button>
+            <button class="reset-button" onclick="resetStyles()">Reset Styles</button>
+            <button class="reset-button" onclick="nextQuestion()">Next Question</button>
+            <button class="reset-button" onclick="showEvaluationPopup()">Finish Test</button>
+            <!-- Form for answers -->
+            <form id="answersForm" style="display: none;">
+                <!-- Input fields for each question's answer -->
+            </form>
+            <br>
+            <br>
+            <br>
+            <br>
+            
+        </div>
+    </div>
+
+    <!-- Right Container -->
+    <div class="split right" id="rightContainer">
+        <div class="centered" id="d1">
+            <p>CSS selectors are integral to web development, offering a way to precisely style HTML elements within a webpage. These selectors, ranging from simple element-based ones like p for paragraphs to more complex ones like classes (.) and IDs (#), allow developers to apply styles selectively. Whether targeting specific elements, applying styles based on classes or IDs, or navigating through the document structure, CSS selectors provide a powerful means to create visually appealing and responsive web designs. Understanding and effectively using these selectors is fundamental for web developers to enhance the presentation and layout of their websites.</p>
+        </div>
+    </div>
+
+    <!-- Popup container -->
+    <div class="popup-container" id="popupContainer">
+        <h2>Evaluation</h2>
+        <!-- Display admin answers and student answers here -->
+        <div id="adminAnswers"></div>
+        <div id="studentAnswers"></div>
+        <button onclick="closeEvaluationPopup()">Close</button>
+    </div>
+    <div class="trademark">
+        <p>Powered By BS Dhevdharsan, Prisha Sri J, Saranya Sarathy.</p>
+        <p>Faculty Mentors : Dr.Sandhya P, Dr. Rama Parvathy L.</p>
+    </div>
+    <script>
+        var currentQuestionIndex = 0;
+
+        // Define questions and answers as associative arrays
+        var questionsAndAnswers = [
+            {
+                question: "Change the background color to red",
+                answer: "background-color: red;"
+            },
+            {
+                question: "Change the text color to blue",
+                answer: "color: blue;"
+            },
+            {
+                question: "Change the text alignment to right",
+                answer: "text-align: right;"
+            },
+            {
+                question: "Increase the padding to 15 pixels.",
+                answer: "padding: 15px;"
+            },
+            {
+                question: "Make the border width 5 pixels.",
+                answer: "border-width: 5px;"
+            },
+            {
+                question: "Change the border color to green.",
+                answer: "border-color: green;"
+            },
+            {
+                question: "Apply a text shadow with a horizontal offset of 2 pixels and a vertical offset of 2 pixels.",
+                answer: "text-shadow: 2px 2px;"
+            },
+            {
+                question: "Use the font family Arial",
+                answer: "font-family: Arial, sans-serif;"
+            },
+            {
+                question: "Create a Gradient Background: Apply a linear gradient background from blue to green. Set text color to white. Add padding of 20 pixels.",
+                answer: "background: linear-gradient(to bottom, blue, green); color: white; padding: 20px;"
+            },
+            {
+                question: "Design a 3D Box Effect: Apply a solid background color of gray. Add a box shadow with a horizontal offset of 5 pixels, vertical offset of 5 pixels, blur radius of 10 pixels, and color green. Set padding to 30 pixels.",
+                answer: "background-color: gray; box-shadow: 5px 5px 10px green; padding: 30px;"
+            },
+            {
+                question: " Design a Glowing Effect: Apply a background color of black. Add padding of 20 pixels. Apply a box shadow with a spread radius of 30 pixels and color blue. Set text color to white.",
+                answer: "background-color: black; padding: 20px; box-shadow: 0 0 30px blue; color: white;"
+            },
+            {
+                question: " Apply a Text Overlay: Set the background color to transparent. Add a text shadow with a horizontal offset of 3 pixel, vertical offset of 3 pixel, blur radius of 4 pixels, and color red. Apply a z-index to ensure the text appears above any other content.",
+                answer:  "background-color: transparent; text-shadow: 3px 3px 4px red; z-index: 999;"
+            },
+            
+            // Add more questions and answers here as needed
+        ];
+
+        // Function to display the next question
+        var studentAnswersArray = [];
+
+        // Function to display the next question
+        function nextQuestion() {
+            var questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = '';
+
+            if (questionsAndAnswers.length > currentQuestionIndex) {
+                // Show current question
+                var currentQuestion = questionsAndAnswers[currentQuestionIndex];
+                var questionParagraph = document.createElement('p');
+                questionParagraph.textContent = 'Question ' + (currentQuestionIndex + 1) + ': ' + currentQuestion.question;
+                questionContainer.appendChild(questionParagraph);
+                
+                // Store student's answer for the current question
+                var studentAnswer = document.getElementById('cssStylesInput').value;
+                studentAnswersArray[currentQuestionIndex-1] = studentAnswer;
+                document.getElementById('cssStylesInput').value = '';
+            }
+            currentQuestionIndex++;
+        }
+
+
+        // Function to apply the entered CSS styles to the right container
+        function applyStyles() {
+            var cssStyles = document.getElementById('cssStylesInput').value;
+
+            // Get the right container element
+            var rightContainer = document.getElementById('d1');
+
+            // Apply the entered CSS styles
+            rightContainer.setAttribute('style', cssStyles);
+        }
+
+        // Function to reset the styles to default
+        function resetStyles() {
+            var rightContainer = document.getElementById('d1');
+            rightContainer.setAttribute('style', 'background-color: rgba(11, 1, 1, 0.5); width: 80%; height: 40vh; padding: 20px; box-sizing: border-box;');
+        }
+
+        // Function to show the evaluation popup
+        function showEvaluationPopup() {
+            var popupContainer = document.getElementById('popupContainer');
+            popupContainer.style.display = 'block';
+            var adminAnswers = document.getElementById('adminAnswers');
+            var studentAnswers = document.getElementById('studentAnswers');
+            adminAnswers.innerHTML = '';
+            studentAnswers.innerHTML = '';
+            // Populate with fresh data
+            populateEvaluationPopup();
+        }
+
+        // Function to close the evaluation popup
+        function closeEvaluationPopup() {
+            var popupContainer = document.getElementById('popupContainer');
+            popupContainer.style.display = 'none';
+        }
+
+        // Function to populate the evaluation popup with admin answers and student answers
+        
+        function populateEvaluationPopup() {
+            var adminAnswers = document.getElementById('adminAnswers');
+            var studentAnswers = document.getElementById('studentAnswers');
+
+            // Retrieve student answers from the textarea
+            //var studentAnswersArray = document.getElementById('cssStylesInput').value.split('\n');
+
+            // Display admin and student answers for attended questions
+            for (var i = 0; i < currentQuestionIndex; i++) {
+                var currentQuestion = questionsAndAnswers[i];
+                
+                // Check if currentQuestion is defined
+                if (currentQuestion) {
+                    var adminAnswerParagraph = document.createElement('p');
+                    adminAnswerParagraph.textContent = 'Admin Answer ' + (i + 1) + ': ' + currentQuestion.answer;
+                    adminAnswers.appendChild(adminAnswerParagraph);
+                    var studentAnswerParagraph = document.createElement('p');
+                    var studentAnswer = studentAnswersArray[i] || ''; // Default to empty string if no answer
+                    studentAnswerParagraph.textContent = 'Your Answer ' + (i+1) + ': ' + studentAnswer;
+                    studentAnswers.appendChild(studentAnswerParagraph);
+                }
+            }
+        }
+
+        // Call nextQuestion() when the page loads
+        window.onload = nextQuestion;
+    </script>
+
+</body>
+
+</html>

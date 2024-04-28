@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* Set the height and width of the split containers */
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        
+        /* Set the background image */
+        body {
+            background-image: url('/Users/dhevdharsan/Downloads/img4.webp');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Styling for the login container */
+        #loginContainer {
+            background-color: rgba(11, 1, 1, 0.5); /* Semi-transparent background */
+            width: 350px; /* Width of the login container */
+            height: 250px; /* Height of the login container */
+            padding: 20px; /* Padding for the login container */
+            box-sizing: border-box; /* Include padding and border in the total width */
+            border-radius: 10px; /* Rounded corners */
+            text-align: center; /* Center align the content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Styling for the input fields */
+        input[type="text"],
+        input[type="password"] {
+            width: 100%; /* Make input fields full width */
+            padding: 10px; /* Padding for input fields */
+            margin-bottom: 15px; /* Spacing between input fields */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ccc; /* Border color */
+            box-sizing: border-box; /* Include padding and border in the total width */
+        }
+
+        /* Styling for the submit button */
+        #loginContainer button {
+            width: 100%; /* Make the button full width */
+            padding: 10px; /* Padding for the button */
+            background-color: #4CAF50; /* Button background color */
+            color: white; /* Button text color */
+            border: none; /* Remove button border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Cursor style */
+            transition: background-color 0.3s; /* Smooth transition for background color */
+        }
+
+        /* Hover effect for the submit button */
+        #loginContainer button:hover {
+            background-color: #45a049; /* Darker background color on hover */
+        }
+
+        /* Styling for the h1 tag */
+        #loginContainer h1 {
+            color: white; /* Text color */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Container -->
+    <div id="loginContainer">
+        <h1>Login</h1>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="loginMessage"></p>
+    </div>
+
+    <script>
+        // Function to handle login
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var loginMessage = document.getElementById('loginMessage');
+            if (username === 'admin' && password === 'admin123') {
+                loginMessage.textContent = 'Logged in as Admin';
+                window.location.href = 'admin.html'; // Redirect to admin page
+            } else if (username === 'student' && password === 'abc123') {
+                loginMessage.textContent = 'Logged in as Student';
+                window.location.href = 'testing.html'; // Redirect to student page
+            } else {
+                loginMessage.textContent = 'Invalid username or password';
+            }
+        }
+    </script>
+</body>
+
+</html>
